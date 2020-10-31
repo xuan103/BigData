@@ -1,4 +1,4 @@
-# class_ppt
+# Class_ppt
 
 - [大數據簡介](https://github.com/xuan103/BigData/wiki/%E5%A4%A7%E6%95%B8%E6%93%9A%E7%B0%A1%E4%BB%8B)
 
