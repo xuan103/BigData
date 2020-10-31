@@ -1,3 +1,15 @@
+# class_ppt
+
+- [大數據簡介](https://github.com/xuan103/BigData/wiki/%E5%A4%A7%E6%95%B8%E6%93%9A%E7%B0%A1%E4%BB%8B)
+
+- [1. 認識 linux](https://github.com/xuan103/BigData/wiki/1.-%E8%AA%8D%E8%AD%98-linux)
+
+- [2. Hadoop HDFS](https://github.com/xuan103/BigData/wiki/2.-Hadoop-HDFS)
+
+- [3. Apache Pig 新手入門](https://github.com/xuan103/BigData/wiki/3.-Apache-Pig-%E6%96%B0%E6%89%8B%E5%85%A5%E9%96%80)
+
+- [4. Apache Pig 駕輕就熟](https://github.com/xuan103/BigData/wiki/4.-Apache-Pig-%E9%A7%95%E8%BC%95%E5%B0%B1%E7%86%9F)
+
 
 # 練習題匯總 :
 
