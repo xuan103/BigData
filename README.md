@@ -73,7 +73,7 @@ update_time : chararray
     614
     ```
     
-      > cat twmask.csv | grep -e '新北市' | wc -l 
+     > cat twmask.csv | grep -e '新北市' | wc -l 
    
     ```     
     970
