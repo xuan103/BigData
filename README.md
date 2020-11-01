@@ -67,32 +67,32 @@ update_time : chararray
 
     - bash
     
-     > cat twmask.csv | grep -e '臺北市' | wc -l
+      > cat twmask.csv | grep -e '臺北市' | wc -l
     
-     ```
-     614
-     ```
+    ```
+    614
+    ```
     
-     > cat twmask.csv | grep -e '新北市' | wc -l 
+      > cat twmask.csv | grep -e '新北市' | wc -l 
    
-     ```
-     970
-     ```
+    ```     
+    970
+    ```
 
     - pig
 
-    >> taipei = FOREACH data GENERATE address;
+      >> taipei = FOREACH data GENERATE address;
 
-    >> taipei1 = FILTER taipei BY $0 matches '臺北市.*' or $0 matches '新北市.*';
- 
-    >> taipei2 = FOREACH taipei1 GENERATE $0, SUBSTRING($0,0,3);
+      >> taipei1 = FILTER taipei BY $0 matches '臺北市.*' or $0 matches '新北市.*';
+   
+      >> taipei2 = FOREACH taipei1 GENERATE $0, SUBSTRING($0,0,3);
 
-    >> taipei3 = GROUP taipei2 BY $1;
+      >> taipei3 = GROUP taipei2 BY $1;
 
-    >> taipei4 = FOREACH taipei3 GENERATE COUNT($1),$0;
+      >> taipei4 = FOREACH taipei3 GENERATE COUNT($1),$0;
     
-    >>  dump taipei4
-
+      >>  dump taipei4
+    
     ```
     (970,新北市)
     (614,臺北市)
@@ -104,23 +104,23 @@ update_time : chararray
     
       > cat twmask.csv | grep -e '臺北市大安區' | wc -l
       
-      ```
-      74
-      ```
+    ```
+    74
+    ```
       
     - pig
 
-    >> taipei = FOREACH data GENERATE address;
+      >> taipei = FOREACH data GENERATE address;
 
-    >> taipei1 = FILTER taipei BY $0 matches '臺北市大安區.*';
+      >> taipei1 = FILTER taipei BY $0 matches '臺北市大安區.*';
 
-    >> taipei2 = FOREACH taipei1 GENERATE $0, SUBSTRING($0,0,3);
+      >> taipei2 = FOREACH taipei1 GENERATE $0, SUBSTRING($0,0,3);
 
-    >> taipei3 = GROUP taipei2 BY $1;
+      >> taipei3 = GROUP taipei2 BY $1;
 
-    >> taipei4 = FOREACH taipei3 GENERATE COUNT($1),$0;
-    
-    >> dump taipei4
+      >> taipei4 = FOREACH taipei3 GENERATE COUNT($1),$0;
+     
+      >> dump taipei4
 
     ```
     (74,臺北市)
