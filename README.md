@@ -19,23 +19,32 @@
 
 - 請找出桃園市的藥局
 
-
+> cat dragstore.csv | grep –e '桃園市'
 
 - 請問臺北市與新北市的藥局哪個多, 分別有幾間?
 
+> cat dragstore.csv | grep –e '臺北市' 
+> cat dragstore.csv | grep –e '新北市'
 
+    - Ans: 515, 1311, 新北市
 
 - 請問臺北市大安區的藥局總共有幾間 ?
 
+> cat dragstore.csv | grep –e '大安區' | wc -l
 
+    - Ans: 95
 
 - 請找出藥局的名稱,縣市,地區與聯絡電話
 
-
+> cat dragstore.csv | cut –d , -f 2,3,4,8
 
 - 接續上題, 將結果儲存至 ~/wk/data 目錄中的 mydata.csv中
 
-
+> mkdir wk
+> cd wk
+> mkdir data
+> cd ..
+> mv dragstore.csv wk/data/mydata.csv
 
 * * * 
 
@@ -140,6 +149,10 @@ update_time : chararray
 
 
 - 請找出臺北市各區域的口罩與人口的比例
+
+
+
+- 請問口罩分配最公平的前三個縣市是 ?
 
 
 
