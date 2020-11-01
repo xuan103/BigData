@@ -69,15 +69,7 @@ update_time : chararray
     
       > cat twmask.csv | grep -e '臺北市' | wc -l
     
-    ```
-    614
-    ```
-    
-     > cat twmask.csv | grep -e '新北市' | wc -l 
-   
-    ```     
-    970
-    ```
+      > cat twmask.csv | grep -e '新北市' | wc -l 
 
     - pig
 
