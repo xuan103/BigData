@@ -17,34 +17,119 @@
 
 ## 第一週練習
 
+載入資料
+
+```
+data = LOAD '/dataset/pig04/twmask.csv' USING PigStorage(',') AS(
+code : chararray,
+name : chararray,
+address : chararray,
+tel : chararray,
+adult_mask : int,
+child_mask : int,
+update_time : chararray
+);
+```
+
 - 請找出桃園市的藥局
 
-> cat dragstore.csv | grep –e '桃園市'
+    - bath
+    
+      > cat dragstore.csv | grep –e '桃園市'
+    
+    - big
+      
+      >> gp_counties = GROUP data BY SUBSTRING($2,0,3);
+    
+      >> filter_data = FILTER data BY SUBSTRING($2,0,3) == '桃園市';
+    
+      >>  dump filter_data
+      
+```
+...
+(5932043121,埔心藥局,桃園市楊梅區永美路２２５號,(03)4311539,2070,520,2020/10/31 00:47:59)
+(5932043130,宜康美藥局,桃園市楊梅區環東路４５２號,(03)4883805,2493,380,2020/10/31 00:47:59)
+(5932043185,楊梅丁丁藥局,桃園市楊梅區中山北路二段２２７號,(03)4815486,153,0,2020/10/31 00:47:59)
+(5932043210,聖鑫藥局,桃園市楊梅區永美路３８９號１樓,(03)4311995,1701,1050,2020/10/31 00:47:59)
+(5932043274,躍獅天明藥局,桃園市楊梅區大成路１７７號,(03)2888295,926,378,2020/10/31 00:47:59)
+...
+```
 
 - 請問臺北市與新北市的藥局哪個多, 分別有幾間?
 
-> cat dragstore.csv | grep –e '臺北市' 
-> cat dragstore.csv | grep –e '新北市'
+    - bath
+    
+      > cat dragstore.csv | grep –e '臺北市' 
+    
+      ```
+      614
+      ```
+    
+      > cat dragstore.csv | grep –e '新北市'
+    
+      ```
+      970
+      ```
 
-    - Ans: 515, 1311, 新北市
+    - pig
+
+    >> taipei = FOREACH data GENERATE address;
+
+    >> taipei1 = FILTER taipei BY $0 matches '臺北市.*' or $0 matches '新北市.*';
+ 
+    >> taipei2 = FOREACH taipei1 GENERATE $0, SUBSTRING($0,0,3);
+
+    >> taipei3 = GROUP taipei2 BY $1;
+
+    >> taipei4 = FOREACH taipei3 GENERATE COUNT($1),$0;
+    
+    >>  dump taipei4
+
+```
+(970,新北市)
+(614,臺北市)
+```
 
 - 請問臺北市大安區的藥局總共有幾間 ?
 
-> cat dragstore.csv | grep –e '大安區' | wc -l
+    - bath
+    
+      > cat dragstore.csv | grep –e '大安區' | wc -l
+      
+      ```
+      95
+      ```
+      
+    - pig
+    
+    >> filter_data = FILTER data BY SUBSTRING($2,0,3) == '臺北市' AND $1 MATCHES '.*大安區';
 
-    - Ans: 95
+    >> taipei = FOREACH data GENERATE address;
+
+    >> taipei1 = FILTER taipei BY $0 matches '臺北市.*' or $0 matches '新北市.*';
+
+    >> taipei2 = FOREACH taipei1 GENERATE $0, SUBSTRING($0,0,3);
+
+    >> taipei3 = GROUP taipei2 BY $1;
+
+    >> taipei4 = FOREACH taipei3 GENERATE COUNT($1),$0;
+
 
 - 請找出藥局的名稱,縣市,地區與聯絡電話
 
-> cat dragstore.csv | cut –d , -f 2,3,4,8
+    - bath
+    
+      > cat dragstore.csv | cut –d , -f 2,3,4,8
 
 - 接續上題, 將結果儲存至 ~/wk/data 目錄中的 mydata.csv中
 
-> mkdir wk
-> cd wk
-> mkdir data
-> cd ..
-> mv dragstore.csv wk/data/mydata.csv
+    - bath
+    
+      >  mkdir wk
+      > cd wk
+      > mkdir data
+      > cd ..
+      > mv dragstore.csv wk/data/mydata.csv
 
 * * * 
 
@@ -99,7 +184,7 @@ update_time : chararray
       
       > gp_counties = GROUP data BY SUBSTRING($2,0,3);
 
-    - 使用 SUM函數來統計每個群組(縣市)中的兒童口罩數量
+    - 使用 SUM 函數來統計每個群組(縣市)中的兒童口罩數量
       > sum_child = FOREACH gp_counties GENERATE $0,SUM($1.$5);
 
     - 使用 ORDER 來排序口罩數量 (降冪,倒排序,由大到小)
@@ -112,37 +197,45 @@ update_time : chararray
 - 找出臺北市的健康服務中心的成人口罩數量前三名
 
     - 使用 FILTER 來找出台北市與健康服務中心
+    
       > filter_data = FILTER data BY SUBSTRING($2,0,3) == '臺北市' AND $1 MATCHES '.*健康服務中心';
 
     - 使用 ORDER 來排序成人口罩數量
+    
       > order_adult = ORDER filter_data BY $4 DESC;
 
     - 使用 LIMIT 列出前三名
+    
       > top3_adult = LIMIT order_adult 3;
 
 
 - 找出臺北市各區域的兒童口罩數量前三名
 
     - 使用 FILTER 找出台北市的藥局資料
+    
       > filter_data = FILTER data BY SUBSTRING($2,0,3) == '臺北市';
 
     - 使用 address 找出區域並以此來分組
+    
       > gp_area = GROUP filter_data BY SUBSTRING($2,3,6);
 
-    - 使用 SUM函數來統計每個群組(區域)中的兒童口罩數量
+    - 使用 SUM 函數來統計每個群組(區域)中的兒童口罩數量
+    
       > sum_child = FOREACH gp_area GENERATE $0,SUM($1.$5);
 
     - 使用 ORDER 來排序兒童口罩數量
+    
       > order_child = ORDER sum_child BY $1 DESC;
 
     - 使用 LIMIT 列出前三名
+    
       > top3_child = LIMIT order_child 3;
 
 * * *
 
 ## 第四週練習
 
-- 各縣市地區的成人與兒童口罩的總和最多的前三個, 各幾個 ?
+- 臺北市地區的成人與兒童口罩的總和最多的前三個, 各幾個 ?
 
 ```
 >> data2 = FOREACH data GENERATE $1, SUBSTRING($2,0,6), $4, $5;
@@ -178,9 +271,13 @@ top3_child = LIMIT order_total 3;
 
 ```
 pop_data2 = FOREACH pop_data GENERATE SUBSTRING($0,0,3),$1;
+
 gp_pop_data2 = GROUP pop_data2 BY$0;
+
 counties_people = FOREACH gp_pop_data2 GENERATE $0, SUM($1.$1);
+
 desc_counties = ORDER counties_people BY $1 DESC;
+
 limit_counties = LIMIT desc_counties 1; 
 
 ```
