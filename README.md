@@ -52,23 +52,29 @@
 
 - 找出臺北市兒童剩餘口罩剩餘最多藥局的前五個藥局
 
-
+> cat twmask2.csv | sort -t',' -k6 | cut -d',' -f2 | head -n 5
 
 - 續上題，請問兒童口套數量第50名的藥局名稱?
 
-
+> cat twmask2.csv | sort -t',' -k6 | cut -d',' -f2 | head -n 50 | cat –n
 
 - 找出臺北市藥局的成人口罩數量並存成新的檔案
 
-
+> cat twmask2.csv | sort -r -t',' -k5 | cut -d',' -f2,3,5 > ans.csv
 
 - 請問哪一間藥局擁有最多的兒童口罩 ? 藥局代號與名稱 ? 擁有多少兒童口罩 ? 地址與聯絡方式  ?
 
-
+> child = FOREACH data GENERATE $0,$1,$2,$3,$5;
+> child_desc = ORDER child BY $4 DESC;
+> child_desc_1 = LIMIT child_desc 1;
+> Dump child_desc_1;
 
 - 請將桃園縣也替換為桃園市, 並且再次統計全台灣各縣市的醫事機構
 
-
+> counties_replace = FOREACH counties GENERATE $0,REPLACE($1, '桃園縣','桃園市') ,$2;
+> counties_gp = GROUP counties_replace BY $1;
+> counties_count = FOREACH counties_gp GENERATE $0,COUNT($1);
+> DUMP counties_count;
 
  * * *
 
@@ -138,22 +144,68 @@ update_time : chararray
 
 - 各縣市地區的成人與兒童口罩的總和最多的前三個, 各幾個 ?
 
+```
+>> data2 = FOREACH data GENERATE $1, SUBSTRING($2,0,6), $4, $5;
+total_mask = FOREACH data2 GENERATE $0, $1, $2+$3;
+filter_mask = Filter total_mask BY $1 matches '臺北市.*';
+group_mask = GROUP filter_mask BY $1;
+sum_mask =  FOREACH group_mask GENERATE $0, SUM($1.$2);
+order_total = ORDER sum_mask BY $1 DESC;
+top3_child = LIMIT order_total 3;
+
+```
+
+>> dump top3_child;
 
 
 - 找出臺北市的兒童口罩平均最多的前三個區域, 各幾個 ?
 
+```
+
+data2 = FOREACH data GENERATE $1, SUBSTRING($2,0,6), $5;
+filter_mask = Filter total_mask BY $1 matches '臺北市.*';
+group_mask = GROUP filter_mask BY $1;
+avg_mask = FOREACH group_mask GENERATE $0, AVG($1.$2);
+order_total = ORDER avg_mask BY $1 DESC;
+top3_child = LIMIT order_total 3;
+
+```
+
+>> dump top3_child;
 
 
 - 請找出全台灣人口最多的縣市
 
+```
+pop_data2 = FOREACH pop_data GENERATE SUBSTRING($0,0,3),$1;
+gp_pop_data2 = GROUP pop_data2 BY$0;
+counties_people = FOREACH gp_pop_data2 GENERATE $0, SUM($1.$1);
+desc_counties = ORDER counties_people BY $1 DESC;
+limit_counties = LIMIT desc_counties 1; 
 
+```
+
+>> dump limit_counties;
 
 - 請找出臺北市各區域的口罩與人口的比例
 
+```
+join1 = JOIN counties_people BY $0, sum_adult_child BY $0; pop_mask = FOREACH join1 GENERATE $0 AS counties ,$1 AS people ,$3 AS mask;mask_per_people = FOREACH pop_mask GENERATE counties, (double)mask / (double)people; mask_per_people_round = FOREACH mask_per_people GENERATE $0, desc_mask_per = ORDER mask_per_people_round BY $1 DESC;
+limit_desc = LIMIT desc_mask_per 3;
+```
+
+>> dump limit_desc;
 
 
 - 請問口罩分配最公平的前三個縣市是 ?
 
+```
+join1 = JOIN counties_people BY $0, sum_adult_child BY $0; pop_mask = FOREACH join1 GENERATE $0 AS counties ,$1 AS people ,$3 AS mask;mask_per_people = FOREACH pop_mask GENERATE counties, (double)mask / (double)people; mask_per_people_round = FOREACH mask_per_people GENERATE $0, desc_mask_per = ORDER mask_per_people_round BY $1 DESC;
+limit_desc = LIMIT desc_mask_per 3;
+
+```
+
+>> dump limit_desc;
 
 
 * * *
