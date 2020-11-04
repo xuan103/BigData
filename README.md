@@ -1,4 +1,18 @@
-# Class_ppt
+# 目錄
+
+* * * 
+
+*   [Class_ppt](#ppt)
+
+*   [練習題匯總](#test)
+    *   [第一週練習](#one)
+    *   [第二週練習](#two)
+    *   [第三週練習](#three)
+    *   [第四週練習](#four)
+
+* * * 
+
+<h1 id="ppt">Class_ppt</h1>  
 
 - [大數據簡介](https://github.com/xuan103/BigData/wiki/%E5%A4%A7%E6%95%B8%E6%93%9A%E7%B0%A1%E4%BB%8B)
 
@@ -11,11 +25,9 @@
 - [4. Apache Pig 駕輕就熟](https://github.com/xuan103/BigData/wiki/4.-Apache-Pig-%E9%A7%95%E8%BC%95%E5%B0%B1%E7%86%9F)
 
 
-# 練習題匯總 :
+<h1 id="test">練習題匯總</h1> 
 
-* * * 
-
-## 第一週練習
+<h2 id="one">第一週練習</h2>
 
 載入資料
 
@@ -171,7 +183,7 @@ update_time : chararray
 
 * * * 
 
-## 第二週練習
+<h2 id="two">第二週練習</h2>
 
 載入資料
 
@@ -259,9 +271,8 @@ update_time : chararray
       
       >> DUMP counties_count;
 
- * * *
 
-## 第三週練習
+<h2 id="three">第三週練習</h2>
 
 載入資料
 
@@ -352,9 +363,7 @@ update_time : chararray
       (士林區,37932)
       ```
 
-* * *
-
-## 第四週練習
+<h2 id="four">第四週練習</h2>
 
 載入資料
 
