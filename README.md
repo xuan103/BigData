@@ -150,7 +150,7 @@ update_time : chararray
     
       > mkdir wk
       
-      > cd wk
+      > cd wk/
       
       > mkdir data
       
@@ -158,6 +158,16 @@ update_time : chararray
       
       > mv twmask.csv wk/data/mydata.csv
       
+      > cd wk/data
+      
+      > ll
+      
+      ```
+      total 648
+      drwxrwxr-x 2 user29 user29   4096 十一  4 16:43 ./
+      drwxrwxr-x 3 user29 user29   4096 十一  4 16:43 ../
+      -rw-r--r-- 1 user29 user29 655255 十一  2 02:25 mydata.csv
+      ```
 
 * * * 
 
@@ -271,127 +281,193 @@ update_time : chararray
 
     - 使用 address (地址) 找出縣市名稱並以此來分組
       
-      > gp_counties = GROUP data BY SUBSTRING($2,0,3);
+      >> gp_counties = GROUP data BY SUBSTRING($2,0,3);
 
     - 使用 SUM 函數來統計每個群組(縣市)中的兒童口罩數量
-      > sum_child = FOREACH gp_counties GENERATE $0,SUM($1.$5);
+      >> sum_child = FOREACH gp_counties GENERATE $0,SUM($1.$5);
 
     - 使用 ORDER 來排序口罩數量 (降冪,倒排序,由大到小)
-      > order_child = ORDER sum_child BY $1 DESC;
+      >> order_child = ORDER sum_child BY $1 DESC;
 
     - 使用 LIMIT 列出前三名
-      > top3_child = LIMIT order_child 3;
-
+      >> top3_child = LIMIT order_child 3;
+      
+      >> dump top3_child;
+      
+      ```
+      (新北市,566872)
+      (臺中市,424988)
+      (高雄市,351554)
+      ```
 
 - 找出臺北市的健康服務中心的成人口罩數量前三名
 
     - 使用 FILTER 來找出台北市與健康服務中心
     
-      > filter_data = FILTER data BY SUBSTRING($2,0,3) == '臺北市' AND $1 MATCHES '.*健康服務中心';
+      >> filter_data = FILTER data BY SUBSTRING($2,0,3) == '臺北市' AND $1 MATCHES '.*健康服務中心';
 
     - 使用 ORDER 來排序成人口罩數量
     
-      > order_adult = ORDER filter_data BY $4 DESC;
+      >> order_adult = ORDER filter_data BY $4 DESC;
 
     - 使用 LIMIT 列出前三名
     
-      > top3_adult = LIMIT order_adult 3;
+      >> top3_adult = LIMIT order_adult 3;
 
-
+      >> dump top3_child;
+      
+      ```
+      (新北市,566872)
+      (臺中市,424988)
+      (高雄市,351554)
+      ```
+      
 - 找出臺北市各區域的兒童口罩數量前三名
 
     - 使用 FILTER 找出台北市的藥局資料
     
-      > filter_data = FILTER data BY SUBSTRING($2,0,3) == '臺北市';
+      >> filter_data = FILTER data BY SUBSTRING($2,0,3) == '臺北市';
 
     - 使用 address 找出區域並以此來分組
     
-      > gp_area = GROUP filter_data BY SUBSTRING($2,3,6);
+      >> gp_area = GROUP filter_data BY SUBSTRING($2,3,6);
 
     - 使用 SUM 函數來統計每個群組(區域)中的兒童口罩數量
     
-      > sum_child = FOREACH gp_area GENERATE $0,SUM($1.$5);
+      >> sum_child = FOREACH gp_area GENERATE $0,SUM($1.$5);
 
     - 使用 ORDER 來排序兒童口罩數量
     
-      > order_child = ORDER sum_child BY $1 DESC;
+      >> order_child = ORDER sum_child BY $1 DESC;
 
     - 使用 LIMIT 列出前三名
     
-      > top3_child = LIMIT order_child 3;
+      >> top3_child = LIMIT order_child 3;
+      
+      >> dump top3_child;
+      
+      ```
+      (大安區,42303)
+      (中山區,41101)
+      (士林區,37932)
+      ```
 
 * * *
 
 ## 第四週練習
 
+載入資料
+
+```
+data = LOAD '/dataset/pig04/twmask.csv' USING PigStorage(',') AS(
+code : chararray,
+name : chararray,
+address : chararray,
+tel : chararray,
+adult_mask : int,
+child_mask : int,
+update_time : chararray
+);
+```
+
 - 臺北市地區的成人與兒童口罩的總和最多的前三個, 各幾個 ?
 
-```
->> data2 = FOREACH data GENERATE $1, SUBSTRING($2,0,6), $4, $5;
-total_mask = FOREACH data2 GENERATE $0, $1, $2+$3;
-filter_mask = Filter total_mask BY $1 matches '臺北市.*';
-group_mask = GROUP filter_mask BY $1;
-sum_mask =  FOREACH group_mask GENERATE $0, SUM($1.$2);
-order_total = ORDER sum_mask BY $1 DESC;
-top3_child = LIMIT order_total 3;
+    - big
+     
+      >> data2 = FOREACH data GENERATE $1, SUBSTRING($2,0,6), $4, $5;
+      
+      >> total_mask = FOREACH data2 GENERATE $0, $1, $2+$3;
+      
+      >> filter_mask = Filter total_mask BY $1 matches '臺北市.*';
 
-```
+      >> group_mask = GROUP filter_mask BY $1;
+
+      >> sum_mask =  FOREACH group_mask GENERATE $0, SUM($1.$2);
+
+      >> order_total = ORDER sum_mask BY $1 DESC;
+
+      >> top3_child = LIMIT order_total 3;
+      
+      >> dump top3_child;
+      
+      ```
+      (臺北市大安區,216921)
+      (臺北市中山區,215776)
+      (臺北市士林區,198239)
+      ```
 
 >> dump top3_child;
 
 
 - 找出臺北市的兒童口罩平均最多的前三個區域, 各幾個 ?
 
-```
-
-data2 = FOREACH data GENERATE $1, SUBSTRING($2,0,6), $5;
-filter_mask = Filter total_mask BY $1 matches '臺北市.*';
-group_mask = GROUP filter_mask BY $1;
-avg_mask = FOREACH group_mask GENERATE $0, AVG($1.$2);
-order_total = ORDER avg_mask BY $1 DESC;
-top3_child = LIMIT order_total 3;
-
-```
+    - big
+     
+      >> data2 = FOREACH data GENERATE $1, SUBSTRING($2,0,6), $5;
+      
+      >> filter_mask = Filter total_mask BY $1 matches '臺北市.*';
+      
+      >> group_mask = GROUP filter_mask BY $1;
+      
+      >> avg_mask = FOREACH group_mask GENERATE $0, AVG($1.$2);
+      
+      >> order_total = ORDER avg_mask BY $1 DESC;
+      
+      >> top3_child = LIMIT order_total 3;
+      
+      >> dump top3_child;
+      
+      ```
+      (臺北市中正區,3478.25)
+      (臺北市內湖區,3460.04)
+      (臺北市萬華區,3278.6666666666665)
+      ```
 
 >> dump top3_child;
 
 
 - 請找出全台灣人口最多的縣市
 
-```
-pop_data2 = FOREACH pop_data GENERATE SUBSTRING($0,0,3),$1;
+    - big
+     
+      >> pop_data2 = FOREACH pop_data GENERATE SUBSTRING($0,0,3),$1;
 
-gp_pop_data2 = GROUP pop_data2 BY$0;
+      >> gp_pop_data2 = GROUP pop_data2 BY$0;
 
-counties_people = FOREACH gp_pop_data2 GENERATE $0, SUM($1.$1);
+      >> counties_people = FOREACH gp_pop_data2 GENERATE $0, SUM($1.$1);
 
-desc_counties = ORDER counties_people BY $1 DESC;
+      >> desc_counties = ORDER counties_people BY $1 DESC;
 
-limit_counties = LIMIT desc_counties 1; 
+      >> limit_counties = LIMIT desc_counties 1; 
 
-```
-
->> dump limit_counties;
+      >> dump limit_counties;
 
 - 請找出臺北市各區域的口罩與人口的比例
 
-```
-join1 = JOIN counties_people BY $0, sum_adult_child BY $0; pop_mask = FOREACH join1 GENERATE $0 AS counties ,$1 AS people ,$3 AS mask;mask_per_people = FOREACH pop_mask GENERATE counties, (double)mask / (double)people; mask_per_people_round = FOREACH mask_per_people GENERATE $0, desc_mask_per = ORDER mask_per_people_round BY $1 DESC;
-limit_desc = LIMIT desc_mask_per 3;
-```
+    - big
+     
+      >> join1 = JOIN counties_people BY $0, sum_adult_child BY $0; 
+      
+      >> pop_mask = FOREACH join1 GENERATE $0 AS counties ,$1 AS people ,$3 AS mask;mask_per_people = FOREACH pop_mask GENERATE counties, (double)mask / (double)people; 
+      
+      >> mask_per_people_round = FOREACH mask_per_people GENERATE $0, desc_mask_per = ORDER mask_per_people_round BY $1 DESC;
+      
+      >>limit_desc = LIMIT desc_mask_per 3;
 
->> dump limit_desc;
+      >> dump limit_desc;
 
 
 - 請問口罩分配最公平的前三個縣市是 ?
 
-```
-join1 = JOIN counties_people BY $0, sum_adult_child BY $0; pop_mask = FOREACH join1 GENERATE $0 AS counties ,$1 AS people ,$3 AS mask;mask_per_people = FOREACH pop_mask GENERATE counties, (double)mask / (double)people; mask_per_people_round = FOREACH mask_per_people GENERATE $0, desc_mask_per = ORDER mask_per_people_round BY $1 DESC;
-limit_desc = LIMIT desc_mask_per 3;
+    - big
+     
+      >> join1 = JOIN counties_people BY $0, sum_adult_child BY $0; pop_mask = FOREACH join1 GENERATE $0 AS counties ,$1 AS people ,$3 AS mask;
+      
+      >> mask_per_people = FOREACH pop_mask GENERATE counties, (double)mask / (double)people; mask_per_people_round = FOREACH mask_per_people GENERATE $0, desc_mask_per = ORDER mask_per_people_round BY $1 DESC;
 
-```
+      >> limit_desc = LIMIT desc_mask_per 3;
 
->> dump limit_desc;
+      >> dump limit_desc;
 
 
 * * *
