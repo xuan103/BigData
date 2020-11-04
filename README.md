@@ -156,7 +156,7 @@ update_time : chararray
       
       > cd ..
       
-      > mv dragstore.csv wk/data/mydata.csv
+      > mv twmask.csv wk/data/mydata.csv
       
 
 * * * 
@@ -181,19 +181,43 @@ update_time : chararray
 
     - bash
     
-      >  cat twmask2.csv | sort -t',' -k6 | cut -d',' -f2 | head -n 5
-
+      >  cat twmask.csv | sort -t',' -k6 | cut -d',' -f2 | head -n 5
+      
+      ```
+      新竹縣新豐鄉衛生所
+      宜蘭縣頭城鎮衛生所
+      苗栗縣公館鄉衛生所
+      松田藥局
+      阿里藥局
+      ```
+      
 - 續上題，請問兒童口套數量第50名的藥局名稱?
 
     - bash
     
-      >  cat twmask2.csv | sort -t',' -k6 | cut -d',' -f2 | head -n 50 | cat –n
+      >  cat twmask.csv | sort -t',' -k6 | cut -d',' -f2 | head -n 50 | cat -n
+      
+      ```
+      ..
+      46	大賀藥局
+      47	幸一藥局
+      48	京元藥局
+      49	楊梅丁丁藥局
+      50	大吉藥局
+      ```
 
 - 找出臺北市藥局的成人口罩數量並存成新的檔案
 
     - bash
     
-      >  cat twmask2.csv | sort -r -t',' -k5 | cut -d',' -f2,3,5 > ans.csv
+      > cat twmask.csv | sort -r -t',' -k5 | cut -d',' -f2,3,5 > twmasknew.csv
+      > ll
+      
+      ```
+      ..
+      -rw-r--r--   1 user29 user29 655255 十一  2 02:25 twmask.csv
+      -rw-rw-r--   1 user29 user29 380811 十一  2 23:06 twmasknew.csv
+      ```
 
 - 請問哪一間藥局擁有最多的兒童口罩 ? 藥局代號與名稱 ? 擁有多少兒童口罩 ? 地址與聯絡方式  ?
 
@@ -207,11 +231,16 @@ update_time : chararray
       
       >> Dump child_desc_1;
       
+      ```
+      (5935011998,康安新美藥局,苗栗縣苗栗市中正路739號1樓,(037)373089,3820)
+      ```
 
 - 請將桃園縣也替換為桃園市, 並且再次統計全台灣各縣市的醫事機構
 
     - big
-    
+     
+      >> data =load '/dataset/pig04/twmask.csv' USING PigStorage (',')AS(code: chararray,name:chararray,address:chararray,tel:chararray,smask:int,rmask:int,time:chararray);
+      
       >> counties_replace = FOREACH counties GENERATE $0,REPLACE($1, '桃園縣','桃園市') ,$2;
       
       >> counties_gp = GROUP counties_replace BY $1;
