@@ -271,6 +271,7 @@ update_time : chararray
       
       >> DUMP counties_count;
 
+* * * 
 
 <h2 id="three">第三週練習</h2>
 
@@ -362,6 +363,8 @@ update_time : chararray
       (中山區,41101)
       (士林區,37932)
       ```
+      
+* * *
 
 <h2 id="four">第四週練習</h2>
 
