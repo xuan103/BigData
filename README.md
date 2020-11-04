@@ -376,9 +376,9 @@ limit_counties = LIMIT desc_counties 1;
 - 請找出臺北市各區域的口罩與人口的比例
 
 ```
-join1 = JOIN counties_people BY $0, sum_adult_child BY $0; pop_mask = FOREACH join1 GENERATE $0 AS counties ,$1 AS people ,$3 AS mask;mask_per_people = FOREACH pop_mask GENERATE counties, (double)mask / (double)people; mask_per_people_round = FOREACH mask_per_people GENERATE $0, desc_mask_per = ORDER mask_per_people_round BY $1 DESC;
+join1 = JOIN counties_people BY $0, sum_adult_child BY $0; pop_mask = FOREACH join1 GENERATE $0 AS counties ,$1 AS people ,$3 AS mask;mask_per_people = FOREACH pop_mask GENERATE counties, (double)mask / (double)people; mask_per_people_round = FOREACH mask_per_people GENERATE $0, desc_mask_per = ORDER mask_per_people_round BY $1 DESC;
 limit_desc = LIMIT desc_mask_per 3;
-```
+```
 
 >> dump limit_desc;
 
@@ -386,12 +386,12 @@ limit_desc = LIMIT desc_mask_per 3;
 - 請問口罩分配最公平的前三個縣市是 ?
 
 ```
-join1 = JOIN counties_people BY $0, sum_adult_child BY $0; pop_mask = FOREACH join1 GENERATE $0 AS counties ,$1 AS people ,$3 AS mask;mask_per_people = FOREACH pop_mask GENERATE counties, (double)mask / (double)people; mask_per_people_round = FOREACH mask_per_people GENERATE $0, desc_mask_per = ORDER mask_per_people_round BY $1 DESC;
+join1 = JOIN counties_people BY $0, sum_adult_child BY $0; pop_mask = FOREACH join1 GENERATE $0 AS counties ,$1 AS people ,$3 AS mask;mask_per_people = FOREACH pop_mask GENERATE counties, (double)mask / (double)people; mask_per_people_round = FOREACH mask_per_people GENERATE $0, desc_mask_per = ORDER mask_per_people_round BY $1 DESC;
 limit_desc = LIMIT desc_mask_per 3;
 
 ```
 
->> dump limit_desc;
+>> dump limit_desc;
 
 
 * * *
