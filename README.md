@@ -46,7 +46,7 @@ update_time : chararray
     5932130049,德怡藥局,桃園市復興區澤仁里忠孝路３４號,(03)3821686,624,638,2020/10/31 00:47:59
     ```
     
-    - big
+    - pig
       
       >> gp_counties = GROUP data BY SUBSTRING($2,0,3);
     
