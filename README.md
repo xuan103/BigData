@@ -478,6 +478,10 @@ update_time : chararray
       >> limit_counties = LIMIT desc_counties 1; 
 
       >> dump limit_counties;
+      
+      ```
+      (新北市,4018696)
+      ```
 
 - 請找出臺北市各區域的口罩與人口的比例
 
@@ -487,6 +491,12 @@ update_time : chararray
       
       >> data =load '/dataset/pig04/twmask.csv' USING PigStorage (',') AS (code:chararray, name:chararray, address:chararray, tel:chararray, smask:int, rmask:int, time:chararray);
       
+      >> counties_people = FOREACH gp_pop_data2 GENERATE $0, SUM($1.$1);
+
+      >> gp_adult_child = GROUP filter_adult_child BY area;
+      
+      >> sum_adult_child = FOREACH gp_adult_child GENERATE $0,SUM($1.$1);
+      
       >> join1 = JOIN counties_people BY $0, sum_adult_child BY $0; 
       
       >> pop_mask = FOREACH join1 GENERATE $0 AS counties ,$1 AS people ,$3 AS mask;
@@ -495,7 +505,7 @@ update_time : chararray
       
       >> mask_per_people_round = FOREACH mask_per_people GENERATE $0, desc_mask_per = ORDER mask_per_people_round BY $1 DESC;
       
-      >>limit_desc = LIMIT desc_mask_per 3;
+      >> limit_desc = LIMIT desc_mask_per 3;
 
       >> dump limit_desc;
 
