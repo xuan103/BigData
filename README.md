@@ -487,27 +487,36 @@ update_time : chararray
 
     - pig
       
-      >> pop_data = LOAD '/dataset/pig04/population.csv' USING PigStorage(',') AS (Area:chararray, People:int, Land_area:double, Density:double);
-      
       >> data =load '/dataset/pig04/twmask.csv' USING PigStorage (',') AS (code:chararray, name:chararray, address:chararray, tel:chararray, smask:int, rmask:int, time:chararray);
       
-      >> counties_people = FOREACH gp_pop_data2 GENERATE $0, SUM($1.$1);
-
       >> gp_adult_child = GROUP filter_adult_child BY area;
       
       >> sum_adult_child = FOREACH gp_adult_child GENERATE $0,SUM($1.$1);
       
-      >> join1 = JOIN counties_people BY $0, sum_adult_child BY $0; 
-      
-      >> pop_mask = FOREACH join1 GENERATE $0 AS counties ,$1 AS people ,$3 AS mask;
-      
-      >> mask_per_people = FOREACH pop_mask GENERATE counties, (double)mask / (double)people; 
-      
-      >> mask_per_people_round = FOREACH mask_per_people GENERATE $0, desc_mask_per = ORDER mask_per_people_round BY $1 DESC;
-      
-      >> limit_desc = LIMIT desc_mask_per 3;
+      >> join1 = JOIN counties_people BY $0, sum_adult_child BY $0;
 
-      >> dump limit_desc;
+      >> pop_mask = FOREACH join1 GENERATE $0 AS counties ,$1 AS people ,$3 AS mask;
+
+      >> mask_per_people = FOREACH pop_mask GENERATE counties, (double)mask / (double)people; 
+
+      >> mask_per_people_round = FOREACH mask_per_people GENERATE $0,ROUND_TO($1,2);
+
+      >> dump mask_per_people_round;
+
+
+      >> pop_data = LOAD '/dataset/pig04/population.csv' USING PigStorage(',') AS (Area:chararray, People:int, Land_area:double, Density:double);
+
+      >> pop_data2 = FOREACH pop_data GENERATE SUBSTRING($0,0,6),$1;
+      
+      >> filter_pop_data2 = FILTER pop_data2 BY $0 matches '臺北市.*';
+      
+      >> gp_pop_data2 = GROUP filter_pop_data2 BY $0;
+      
+      >> counties_people = FOREACH gp_pop_data2 GENERATE $0, SUM($1.$1);
+      
+      >> adult_child = FOREACH data GENERATE SUBSTRING(address,0,6) AS area, adult_mask + child_mask AS adult_child_mask;
+      
+      >> filter_adult_child = FILTER adult_child BY $0 matches '臺北市.*';
 
 
 - 請問口罩分配最公平的前三個縣市是 ?
