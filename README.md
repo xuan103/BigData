@@ -244,7 +244,7 @@ update_time : chararray
 
 - 請問哪一間藥局擁有最多的兒童口罩 ? 藥局代號與名稱 ? 擁有多少兒童口罩 ? 地址與聯絡方式  ?
 
-    - big
+    - pig
     
       >> child = FOREACH data GENERATE $0,$1,$2,$3,$5;
       
@@ -260,7 +260,7 @@ update_time : chararray
 
 - 請將桃園縣也替換為桃園市, 並且再次統計全台灣各縣市的醫事機構
 
-    - big
+    - pig
      
       >> data =load '/dataset/pig04/twmask.csv' USING PigStorage (',')AS(code: chararray,name:chararray,address:chararray,tel:chararray,smask:int,rmask:int,time:chararray);
       
