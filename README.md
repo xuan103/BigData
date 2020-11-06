@@ -264,6 +264,8 @@ update_time : chararray
      
       >> data =load '/dataset/pig04/twmask.csv' USING PigStorage (',')AS(code: chararray,name:chararray,address:chararray,tel:chararray,smask:int,rmask:int,time:chararray);
       
+      >> counties = FOREACH data GENERATE $1,SUBSTRING($2,0,3),$4;
+      
       >> counties_replace = FOREACH counties GENERATE $0,REPLACE($1, '桃園縣','桃園市') ,$2;
       
       >> counties_gp = GROUP counties_replace BY $1;
@@ -271,7 +273,33 @@ update_time : chararray
       >> counties_count = FOREACH counties_gp GENERATE $0,COUNT($1);
       
       >> DUMP counties_count;
-
+      
+      ```
+      (南投縣,104)
+      (嘉義市,83)
+      (嘉義縣,132)
+      (基隆市,99)
+      (宜蘭縣,122)
+      (屏東縣,219)
+      (彰化縣,318)
+      (新北市,970)
+      (新竹市,87)
+      (新竹縣,95)
+      (桃園市,472)
+      (澎湖縣,24)
+      (臺中市,705)
+      (臺中縣,2)
+      (臺北市,614)
+      (臺南市,516)
+      (臺東縣,53)
+      (花蓮縣,92)
+      (苗栗縣,128)
+      (連江縣,5)
+      (金門縣,14)
+      (雲林縣,214)
+      (高雄市,598)
+      ```
+      
 * * * 
 
 <h2 id="three">第三週練習</h2>
@@ -434,6 +462,17 @@ update_time : chararray
       ```
 
 - 請找出全台灣人口最多的縣市
+
+載入資料
+
+```
+Pop_data = LOAD ‘/dataset/pig04/population.csv’ USING PigStorage(‘,’) AS (
+Area : chararray,
+People : int,
+Land_area : double,
+Density : double
+);
+```
 
     - pig
      
