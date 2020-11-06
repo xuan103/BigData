@@ -465,7 +465,7 @@ update_time : chararray
 
     - pig
       
-      >> Pop_data = LOAD ‘/dataset/pig04/population.csv’ USING PigStorage(‘,’) AS (Area:chararray, People:int, Land_area:double, Density:double);
+      >> pop_data = LOAD ‘/dataset/pig04/population.csv’ USING PigStorage(‘,’) AS (Area:chararray, People:int, Land_area:double, Density:double);
       
       >> pop_data2 = FOREACH pop_data GENERATE SUBSTRING($0,0,3),$1;
 
@@ -483,7 +483,7 @@ update_time : chararray
 
     - pig
       
-      >> Pop_data = LOAD ‘/dataset/pig04/population.csv’ USING PigStorage(‘,’) AS (Area:chararray, People:int, Land_area:double, Density:double);
+      >> pop_data = LOAD ‘/dataset/pig04/population.csv’ USING PigStorage(‘,’) AS (Area:chararray, People:int, Land_area:double, Density:double);
       
       >> data =load '/dataset/pig04/twmask.csv' USING PigStorage (',') AS (code:chararray, name:chararray, address:chararray, tel:chararray, smask:int, rmask:int, time:chararray);
       
