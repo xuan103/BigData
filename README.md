@@ -516,21 +516,68 @@ update_time : chararray
       >> mask_per_people_round = FOREACH mask_per_people GENERATE $0,ROUND_TO($1,2);
 
       >> dump mask_per_people_round;
-
+      
+      ```
+      (臺北市中山區,0.95)
+      (臺北市中正區,1.06)
+      (臺北市信義區,0.78)
+      (臺北市內湖區,0.61)
+      (臺北市北投區,0.56)
+      (臺北市南港區,0.7)
+      (臺北市士林區,0.7)
+      (臺北市大同區,0.64)
+      (臺北市大安區,0.71)
+      (臺北市文山區,0.56)
+      (臺北市松山區,0.86)
+      (臺北市萬華區,0.74)
+      ```
 
 - 請問口罩分配最公平的前三個縣市是 ?
 
     - pig
      
-      >> join1 = JOIN counties_people BY $0, sum_adult_child BY $0; 
-      
       >> pop_mask = FOREACH join1 GENERATE $0 AS counties ,$1 AS people ,$3 AS mask;
       
-      >> mask_per_people = FOREACH pop_mask GENERATE counties, (double)mask / (double)people; mask_per_people_round = FOREACH mask_per_people GENERATE $0, desc_mask_per = ORDER mask_per_people_round BY $1 DESC;
+      >> data =load '/dataset/pig04/twmask.csv' USING PigStorage (',') AS (code: chararray,name:chararray,address:chararray,tel:chararray,adult_mask:int,child_mask:int,update_time:chararray);
 
-      >> limit_desc = LIMIT desc_mask_per 3;
+      >> pop_data2 = FOREACH pop_data GENERATE SUBSTRING($0,0,6),$1;
 
-      >> dump limit_desc;
+      >> filter_pop_data2 = FILTER pop_data2 BY $0 matches '臺北市.*';
+
+      >> gp_pop_data2 = GROUP filter_pop_data2 BY $0;
+
+      >> counties_people = FOREACH gp_pop_data2 GENERATE $0, SUM($1.$1);
+
+      >> adult_child = FOREACH data GENERATE SUBSTRING(address,0,6) AS area, adult_mask + child_mask AS adult_child_mask;
+
+      >> filter_adult_child = FILTER adult_child BY $0 matches '臺北市.*';
+
+      >> gp_adult_child = GROUP filter_adult_child BY area;
+
+      >> sum_adult_child = FOREACH gp_adult_child GENERATE $0,SUM($1.$1);
+
+      >> join1 = JOIN counties_people BY $0, sum_adult_child BY $0;
+
+      >> pop_mask = FOREACH join1 GENERATE $0 AS counties ,$1 AS people ,$3 AS mask;mask_per_people = FOREACH pop_mask GENERATE counties, (double)mask / (double)people; 
+      
+      >> mask_per_people_round = FOREACH mask_per_people GENERATE $0,ROUND_TO($1,2);
+      
+      >> dump mask_per_people_round;
+
+      ```
+      (臺北市中山區,0.95)
+      (臺北市中正區,1.06)
+      (臺北市信義區,0.78)
+      (臺北市內湖區,0.61)
+      (臺北市北投區,0.56)
+      (臺北市南港區,0.7)
+      (臺北市士林區,0.7)
+      (臺北市大同區,0.64)
+      (臺北市大安區,0.71)
+      (臺北市文山區,0.56)
+      (臺北市松山區,0.86)
+      (臺北市萬華區,0.74)
+      ```
 
 
 * * *
