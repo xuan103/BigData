@@ -262,7 +262,7 @@ update_time : chararray
 
     - pig
      
-      >> data =load '/dataset/pig04/twmask.csv' USING PigStorage (',')AS(code: chararray,name:chararray,address:chararray,tel:chararray,smask:int,rmask:int,time:chararray);
+      >> data =load '/dataset/pig04/twmask.csv' USING PigStorage (',') AS (code: chararray,name:chararray,address:chararray,tel:chararray,smask:int,rmask:int,time:chararray);
       
       >> counties = FOREACH data GENERATE $1,SUBSTRING($2,0,3),$4;
       
@@ -463,19 +463,10 @@ update_time : chararray
 
 - 請找出全台灣人口最多的縣市
 
-載入資料
-
-```
-Pop_data = LOAD ‘/dataset/pig04/population.csv’ USING PigStorage(‘,’) AS (
-Area : chararray,
-People : int,
-Land_area : double,
-Density : double
-);
-```
-
     - pig
-     
+      
+      >> Pop_data = LOAD ‘/dataset/pig04/population.csv’ USING PigStorage(‘,’) AS (Area:chararray, People:int, Land_area:double, Density:double);
+      
       >> pop_data2 = FOREACH pop_data GENERATE SUBSTRING($0,0,3),$1;
 
       >> gp_pop_data2 = GROUP pop_data2 BY$0;
@@ -491,7 +482,11 @@ Density : double
 - 請找出臺北市各區域的口罩與人口的比例
 
     - pig
-     
+      
+      >> Pop_data = LOAD ‘/dataset/pig04/population.csv’ USING PigStorage(‘,’) AS (Area:chararray, People:int, Land_area:double, Density:double);
+      
+      >> data =load '/dataset/pig04/twmask.csv' USING PigStorage (',') AS (code:chararray, name:chararray, address:chararray, tel:chararray, smask:int, rmask:int, time:chararray);
+      
       >> join1 = JOIN counties_people BY $0, sum_adult_child BY $0; 
       
       >> pop_mask = FOREACH join1 GENERATE $0 AS counties ,$1 AS people ,$3 AS mask;mask_per_people = FOREACH pop_mask GENERATE counties, (double)mask / (double)people; 
