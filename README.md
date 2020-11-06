@@ -290,7 +290,7 @@ update_time : chararray
 );
 ```
 
-- 找出各縣市的兒童口罩數量前三名
+- 找出臺北市的兒童口罩數量前三名
 
     - 使用 address (地址) 找出縣市名稱並以此來分組
       
@@ -385,7 +385,7 @@ update_time : chararray
 
 - 臺北市地區的成人與兒童口罩的總和最多的前三個, 各幾個 ?
 
-    - big
+    - pig
      
       >> data2 = FOREACH data GENERATE $1, SUBSTRING($2,0,6), $4, $5;
       
@@ -411,7 +411,7 @@ update_time : chararray
 
 - 找出臺北市的兒童口罩平均最多的前三個區域, 各幾個 ?
 
-    - big
+    - pig
      
       >> data2 = FOREACH data GENERATE $1, SUBSTRING($2,0,6), $5;
       
@@ -435,7 +435,7 @@ update_time : chararray
 
 - 請找出全台灣人口最多的縣市
 
-    - big
+    - pig
      
       >> pop_data2 = FOREACH pop_data GENERATE SUBSTRING($0,0,3),$1;
 
@@ -451,7 +451,7 @@ update_time : chararray
 
 - 請找出臺北市各區域的口罩與人口的比例
 
-    - big
+    - pig
      
       >> join1 = JOIN counties_people BY $0, sum_adult_child BY $0; 
       
@@ -466,7 +466,7 @@ update_time : chararray
 
 - 請問口罩分配最公平的前三個縣市是 ?
 
-    - big
+    - pig
      
       >> join1 = JOIN counties_people BY $0, sum_adult_child BY $0; pop_mask = FOREACH join1 GENERATE $0 AS counties ,$1 AS people ,$3 AS mask;
       
