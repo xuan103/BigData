@@ -496,14 +496,12 @@ update_time : chararray
       >> gp_pop_data2 = GROUP filter_pop_data2 BY $0;
       
       >> counties_people = FOREACH gp_pop_data2 GENERATE $0, SUM($1.$1);
+          
+      >> data =load '/dataset/pig04/twmask.csv' USING PigStorage (',') AS (code:chararray, name:chararray, address:chararray, tel:chararray, smask:int, rmask:int, time:chararray);
       
-      >> adult_child = FOREACH data GENERATE SUBSTRING(address,0,6) AS area, adult_mask + child_mask AS adult_child_mask;
+       >> adult_child = FOREACH data GENERATE SUBSTRING(address,0,6) AS area, adult_mask+child_mask AS adult_child_mask;
       
       >> filter_adult_child = FILTER adult_child BY $0 matches '臺北市.*';
-
-
-      
-      >> data =load '/dataset/pig04/twmask.csv' USING PigStorage (',') AS (code:chararray, name:chararray, address:chararray, tel:chararray, smask:int, rmask:int, time:chararray);
       
       >> gp_adult_child = GROUP filter_adult_child BY area;
       
