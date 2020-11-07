@@ -1,0 +1,70 @@
+<NotepadPlus>
+<AutoComplete>
+	<KeyWord name="boolean"/>
+</AutoComplete>
+    <UserLang name="PIG" ext="pig" udlVersion="2.1">
+        <Settings>
+            <Global caseIgnored="yes" allowFoldOfComments="no" foldCompact="no" forcePureLC="0" decimalSeparator="0" />
+            <Prefix Keywords1="no" Keywords2="no" Keywords3="no" Keywords4="no" Keywords5="no" Keywords6="no" Keywords7="no" Keywords8="no" />
+        </Settings>
+	
+        <KeywordLists>
+            <Keywords name="Comments">00-- 01 02 03/* 04*/</Keywords>
+            <Keywords name="Numbers, prefix1"></Keywords>
+            <Keywords name="Numbers, prefix2"></Keywords>
+            <Keywords name="Numbers, extras1"></Keywords>
+            <Keywords name="Numbers, extras2"></Keywords>
+            <Keywords name="Numbers, suffix1"></Keywords>
+            <Keywords name="Numbers, suffix2"></Keywords>
+            <Keywords name="Numbers, range"></Keywords>
+            <Keywords name="Operators1">{ } ( ) , . : ? + &lt; = &gt; ; * == !=  &lt;= &gt;= - / % $ # ::</Keywords>
+            <Keywords name="Operators2"></Keywords>
+            <Keywords name="Folders in code1, open"></Keywords>
+            <Keywords name="Folders in code1, middle"></Keywords>
+            <Keywords name="Folders in code1, close"></Keywords>
+            <Keywords name="Folders in code2, open"></Keywords>
+            <Keywords name="Folders in code2, middle"></Keywords>
+            <Keywords name="Folders in code2, close"></Keywords>
+            <Keywords name="Folders in comment, open"></Keywords>
+            <Keywords name="Folders in comment, middle"></Keywords>
+            <Keywords name="Folders in comment, close"></Keywords>
+            <Keywords name="Keywords1">and any all arrange assert asc as bag by cache case cat cd cogroup copyfromlocal copytolocal cp cross cube %declare %default define describe desc dense diff distinct dump du eval exec explain filter flatten foreach full generate group help if illustrate import inner input into is join kill left limit load ls map matches mkdir mv not onschema order or outer output parallel pig pwd quit rank register returns right rmf rm rollup run sample set ship split stderr stdin stdout store stream through tuple union using void AND ANY ALL ARRANGE ASSERT ASC AS BAG BY CACHE CASE CAT CD COGROUP COPYFROMLOCAL COPYTOLOCAL CP CROSS CUBE %DECLARE %DEFAULT DEFINE DESCRIBE DESC DENSE DIFF DISTINCT DUMP DU EVAL EXEC EXPLAIN FILTER FLATTEN FOREACH FULL GENERATE GROUP HELP IF ILLUSTRATE IMPORT INNER INPUT INTO IS JOIN KILL LEFT LIMIT LOAD LS MAP MATCHES MKDIR MV NOT ONSCHEMA ORDER OR OUTER OUTPUT PARALLEL PIG PWD QUIT RANK REGISTER RETURNS RIGHT RMF RM ROLLUP RUN SAMPLE SET SHIP SPLIT STDERR STDIN STDOUT STORE STREAM THROUGH TUPLE UNION USING VOID</Keywords>
+            <Keywords name="Keywords2">int float long double chararray bytearray boolean tuple bag map datetime biginteger bigdecimal e f l null INT FLOAT LONG DOUBLE CHARARRAY BYTEARRAY BOOLEAN TUPLE BAG MAP DATETIME BIGINTEGER BIGDECIMAL E F L NULL</Keywords>
+            <Keywords name="Keywords3">ABS ACOS AccumuloStorage AddDuration ASIN ATAN AVG AvroStorage BagToString BinStorage CBRT CEIL CONCAT COSH COS COUNT_STAR COUNT CurrentTime DaysBetween DIFF ENDSWITH EqualsIgnoreCase EXP FLOOR GetDay GetHour GetMilliSecond GetMinute GetMonth GetSecond GetWeek GetWeekYear GetYear HBaseStorage HoursBetween INDEXOF IsEmpty JsonLoader JsonStorage LAST_INDEX_OF LCFIRST LOG10 LOG LOWER LTRIM MAX MilliSecondsBetween MIN MinutesBetween MonthsBetween OrcStorage PigDump PigStorage PluckTuple RANDOM REGEX_EXTRACT_ALL REGEX_EXTRACT REPLACE ROUND_TO ROUND RTRIM SecondsBetween SINH SIN SIZE SPRINTF SQRT STARTSWITH STRSPLITTOBAG STRSPLIT SUBSTRING SubtractDuration SUBTRACT SUM TANH TAN Terms TextLoader TOBAG ToDate TOKENIZE TOMAP ToMilliSeconds TOP ToString TOTUPLE ToUnixTime TRIM TrevniStrorage UCFIRST UniqueID UPPER Usage WeeksBetween YearsBetween</Keywords>               
+            <Keywords name="Keywords4">true false</Keywords>
+            <Keywords name="Keywords5"></Keywords>
+            <Keywords name="Keywords6"></Keywords>
+            <Keywords name="Keywords7"></Keywords>
+            <Keywords name="Keywords8"></Keywords>
+            <Keywords name="Delimiters">00&apos; 01 02&apos; 03 04 05 06 07 08 09 10 11 12 13 14 15 16 17 18 19 20 21 22 23</Keywords>
+        </KeywordLists>
+        <Styles>
+
+            <WordsStyle name="OPERATORS" fgColor="FF00FF" bgColor="FFFFFF" fontName="" fontStyle="0" nesting="0" />
+            <WordsStyle name="DEFAULT" fgColor="800000" bgColor="FFFFFF" fontName="" fontStyle="0" nesting="0" />
+            <WordsStyle name="COMMENTS" fgColor="008000" bgColor="FFFFFF" fontName="" fontStyle="0" nesting="0" />
+            <WordsStyle name="LINE COMMENTS" fgColor="008000" bgColor="FFFFFF" fontName="" fontStyle="0" nesting="0" />
+            <WordsStyle name="NUMBERS" fgColor="FF00FF" bgColor="FFFFFF" fontName="" fontStyle="0" nesting="0" />
+            <WordsStyle name="KEYWORDS1" fgColor="32CD32" bgColor="FFFFFF" fontName="" fontStyle="1" nesting="0" />
+            <WordsStyle name="KEYWORDS2" fgColor="008080" bgColor="FFFFFF" fontName="" fontStyle="0" nesting="0" />
+            <WordsStyle name="KEYWORDS3" fgColor="0000FF" bgColor="FFFFFF" fontName="" fontStyle="0" nesting="0" />
+            <WordsStyle name="KEYWORDS4" fgColor="0000FF" bgColor="FFFFFF" fontName="" fontStyle="0" nesting="0" />
+            <WordsStyle name="KEYWORDS5" fgColor="000000" bgColor="FFFFFF" fontName="" fontStyle="0" nesting="0" />
+            <WordsStyle name="KEYWORDS6" fgColor="000000" bgColor="FFFFFF" fontName="" fontStyle="0" nesting="0" />
+            <WordsStyle name="KEYWORDS7" fgColor="000000" bgColor="FFFFFF" fontName="" fontStyle="0" nesting="0" />
+            <WordsStyle name="KEYWORDS8" fgColor="000000" bgColor="FFFFFF" fontName="" fontStyle="0" nesting="0" />
+            <WordsStyle name="OPERATORS" fgColor="000000" bgColor="FFFFFF" fontName="" fontStyle="0" nesting="0" />
+            <WordsStyle name="FOLDER IN CODE1" fgColor="000000" bgColor="FFFFFF" fontName="" fontStyle="0" nesting="0" />
+            <WordsStyle name="FOLDER IN CODE2" fgColor="000000" bgColor="FFFFFF" fontName="" fontStyle="0" nesting="0" />
+            <WordsStyle name="FOLDER IN COMMENT" fgColor="000000" bgColor="FFFFFF" fontName="" fontStyle="0" nesting="0" />
+            <WordsStyle name="DELIMITERS1" fgColor="FF00FF" bgColor="FFFFFF" fontName="" fontStyle="1" nesting="0" />
+            <WordsStyle name="DELIMITERS2" fgColor="000000" bgColor="FFFFFF" fontName="" fontStyle="0" nesting="0" />
+            <WordsStyle name="DELIMITERS3" fgColor="000000" bgColor="FFFFFF" fontName="" fontStyle="0" nesting="0" />
+            <WordsStyle name="DELIMITERS4" fgColor="000000" bgColor="FFFFFF" fontName="" fontStyle="0" nesting="0" />
+            <WordsStyle name="DELIMITERS5" fgColor="000000" bgColor="FFFFFF" fontName="" fontStyle="0" nesting="0" />
+            <WordsStyle name="DELIMITERS6" fgColor="000000" bgColor="FFFFFF" fontName="" fontStyle="0" nesting="0" />
+            <WordsStyle name="DELIMITERS7" fgColor="000000" bgColor="FFFFFF" fontName="" fontStyle="0" nesting="0" />
+            <WordsStyle name="DELIMITERS8" fgColor="000000" bgColor="FFFFFF" fontName="" fontStyle="0" nesting="0" />
+        </Styles>
+    </UserLang>
+</NotepadPlus>
