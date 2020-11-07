@@ -25,6 +25,7 @@
 
 - [4. Apache Pig 駕輕就熟](https://github.com/xuan103/BigData/wiki/4.-Apache-Pig-%E9%A7%95%E8%BC%95%E5%B0%B1%E7%86%9F)
 
+- [5. Pig 語法複習](https://github.com/xuan103/BigData/wiki/05---Pig-%E8%AA%9E%E6%B3%95%E8%A4%87%E7%BF%92)
 * * *
 
 <h1 id="test">練習題匯總</h1> 
